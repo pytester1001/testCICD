@@ -5,6 +5,7 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
   test:
@@ -39,5 +40,4 @@ jobs:
       - name: Run Pytest
         env:
           SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
-        # Running selenium test
-        run: pytest test_login.py
+        run: pytest test_login.py -v
