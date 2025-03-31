@@ -1,11 +1,7 @@
-name: Run Pytest Selenium
+name: Run Pytest Selenium (Manual Only)
 
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
-  workflow_dispatch:
+  workflow_dispatch:  # 手動觸發，不自動跑
 
 jobs:
   test:
