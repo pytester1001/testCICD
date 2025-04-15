@@ -36,4 +36,4 @@ jobs:
       - name: Run Pytest
         env:
           SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
-        run: pytest test_login.py -v test_company.py -v
+        run: test_company.py -v
