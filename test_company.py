@@ -17,10 +17,17 @@ import pytest , time , os , random
 # 設置 Browser 環境
 @pytest.fixture
 def driver(scope="function"):
+
+    # 設置遠端Selenium Server環境
+    driver = webdriver.Remote(
+    command_executor="http://localhost:4444/wd/hub",
+    options=webdriver.ChromeOptions()
+    )
+    
     # 設置 Chrome 環境
-    options = ChromeOptions()
-    service = ChromeService("/usr/local/bin/chromedriver")
-    driver = webdriver.Chrome(service=service, options=options)
+    # options = ChromeOptions()
+    # service = ChromeService("/usr/local/bin/chromedriver")
+    # driver = webdriver.Chrome(service=service, options=options)
 
     # 設置 Firefox 環境
     # options = FirefoxOptions()
