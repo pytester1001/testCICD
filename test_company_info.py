@@ -209,11 +209,11 @@ def test_add_new_application_case_successfully(driver,login_manufactor):
             )
             assert file_type_text.text == filetype_text, f"列表中找不到『{filetype_text}』"
         # 上傳文件
-        upload_file('產品製程圖', '/Users/harry/Desktop/Picture/副檔名/test.pdf')
-        upload_file('工廠登記核准相關文件', '/Users/harry/Desktop/Picture/dog1.jpg')
-        upload_file('工廠平面配置圖', '/Users/harry/Desktop/Picture/dog2.jpg')
-        upload_file('生產設備 清潔/消毒 之作業 方式/程序(含清潔劑、消毒劑)', '/Users/harry/Desktop/Picture/dog3.jpg')
-        upload_file('其它(檔名請清楚描述檔案用途)', '/Users/harry/Desktop/Picture/dog4.jpg')
+        upload_file('產品製程圖', 'assets/test.pdf')
+        upload_file('工廠登記核准相關文件', 'assets/dog1.jpg')
+        upload_file('工廠平面配置圖', 'assetsdog2.jpg')
+        upload_file('生產設備 清潔/消毒 之作業 方式/程序(含清潔劑、消毒劑)', 'assets/dog3.jpg')
+        upload_file('其它(檔名請清楚描述檔案用途)', 'assets/dog4.jpg')
         add_button = wait_for_element_clickable(driver, (By.XPATH, "/html/body/div[2]/div/div[2]/div[3]/div[2]/button"))
         assert add_button is not None, "找不到：add_button"
         add_button.click()
@@ -304,7 +304,7 @@ def test_add_new_application_case_successfully(driver,login_manufactor):
         upload_input = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.ID, 'healthLicense'))
         )
-        upload_input.send_keys('/Users/harry/Desktop/Picture/副檔名/test.pdf')
+        upload_input.send_keys('assets/test.pdf')
         # 驗證顯示'檢視檔案'
         file_link = wait_for_element_clickable(driver, (By.XPATH, "//a[contains(text(),'檢視檔案')]"))
         assert "檢視檔案" in file_link.text, "欄位文字顯示錯誤，應為『檢視檔案』"
@@ -363,7 +363,7 @@ def test_add_new_application_case_successfully(driver,login_manufactor):
                 "//label[normalize-space(text())='規格圖片']/following-sibling::div//input[@type='file']"
             ))
         )
-        upload_input.send_keys("/Users/harry/Desktop/Picture/dog1.jpg")
+        upload_input.send_keys("assets/dog1.jpg")
 
         # 選擇原料
         select_raw_material = wait_for_element_clickable(driver, (By.XPATH, "/html/body/div[2]/div/div[2]/div[4]/div[1]/div/button"))
@@ -551,7 +551,7 @@ def test_add_new_application_case_successfully(driver,login_manufactor):
     for i in range(3): 
         timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
         file_desc = f'test_file_{timestamp}_{i}'
-        file_path = f'/Users/harry/Desktop/Picture/dog{i+1}.jpg'
+        file_path = f'assets/dog{i+1}.jpg'
         # 輸入檔案說明
         file_name = wait_for_element_clickable(driver, (By.XPATH, "//input[@placeholder='請輸入檔案說明']"))
         assert file_name is not None, "找不到：file_name"
@@ -599,7 +599,7 @@ def test_add_new_application_case_successfully(driver,login_manufactor):
     upload_input = WebDriverWait(driver, 10).until(
         EC.presence_of_element_located((By.ID, "paidFile"))
     )
-    upload_input.send_keys("/Users/harry/Desktop/Picture/dog1.jpg")
+    upload_input.send_keys("assets/dog1.jpg")
     # 彈窗確認
     check_alert = wait_for_element_clickable(driver, (By.XPATH, '//button[contains(text(),"確定")]'))
     assert check_alert is not None, "找不到：check_alert"
