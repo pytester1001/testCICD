@@ -205,11 +205,11 @@ def test_add_new_application_case_successfully(driver,login_manufactor):
             )
             assert file_type_text.text == filetype_text, f"列表中找不到『{filetype_text}』"
         # 上傳五個文件
-        upload_file('產品製程圖', '/Users/harry/Desktop/Picture/副檔名/test.pdf')
-        upload_file('工廠登記核准相關文件', '/Users/harry/Desktop/Picture/dog1.jpg')
-        upload_file('工廠平面配置圖', '/Users/harry/Desktop/Picture/dog2.jpg')
-        upload_file('生產設備 清潔/消毒 之作業 方式/程序(含清潔劑、消毒劑)', '/Users/harry/Desktop/Picture/dog3.jpg')
-        upload_file('其它(檔名請清楚描述檔案用途)', '/Users/harry/Desktop/Picture/dog4.jpg')
+        upload_file('產品製程圖', 'assets/test.pdf')
+        upload_file('工廠登記核准相關文件', 'assets/dog1.jpg')
+        upload_file('工廠平面配置圖', 'assets/dogㄉ.jpg')
+        upload_file('生產設備 清潔/消毒 之作業 方式/程序(含清潔劑、消毒劑)', 'assets/dog3.jpg')
+        upload_file('其它(檔名請清楚描述檔案用途)', 'assets/dog4.jpg')
         add_button = wait_for_element_clickable(driver, (By.XPATH, "/html/body/div[2]/div/div[2]/div[3]/div[2]/button"))
         assert add_button is not None, "找不到：add_button"
         add_button.click()
@@ -303,7 +303,7 @@ def test_add_new_application_case_successfully(driver,login_manufactor):
         upload_input = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.ID, 'healthLicense'))
         )
-        upload_input.send_keys('/Users/harry/Desktop/Picture/副檔名/test.pdf')
+        upload_input.send_keys('assets/test.pdf')
         # 驗證顯示'檢視檔案'
         file_link = wait_for_element_clickable(driver, (By.XPATH, "//a[contains(text(),'檢視檔案')]"))
         assert "檢視檔案" in file_link.text, "欄位文字顯示錯誤，應為『檢視檔案』"
@@ -561,7 +561,7 @@ def test_add_new_application_case_successfully(driver,login_manufactor):
     for i in range(3):  # 要上傳 3 筆檔案
         timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
         file_desc = f'test_file_{timestamp}_{i}'
-        file_path = f'/Users/harry/Desktop/Picture/dog{i+1}.jpg'  # dog1.jpg ~ dog3.jpg
+        file_path = f'assets/dog{i+1}.jpg'  # dog1.jpg ~ dog3.jpg
         # 輸入檔案說明
         file_name = wait_for_element_clickable(driver, (By.XPATH, "//input[@placeholder='請輸入檔案說明']"))
         assert file_name is not None, "找不到：file_name"
@@ -608,24 +608,24 @@ def test_add_new_application_case_successfully(driver,login_manufactor):
     upload_input = WebDriverWait(driver, 10).until(
         EC.presence_of_element_located((By.ID, "paidFile"))
     )
-    upload_input.send_keys("/Users/harry/Desktop/Picture/dog1.jpg")
+    upload_input.send_keys("assets/dog1.jpg")
     # # 彈窗確認
-    # check_alert = wait_for_element_clickable(driver, (By.XPATH, '//button[contains(text(),"確定")]'))
-    # assert check_alert is not None, "找不到：check_alert"
-    # check_alert.click()
+    check_alert = wait_for_element_clickable(driver, (By.XPATH, '//button[contains(text(),"確定")]'))
+    assert check_alert is not None, "找不到：check_alert"
+    check_alert.click()
     # # 送出申請
-    # send_application = wait_for_element_clickable(driver, (By.XPATH, "//button[contains(text(),'送出申請')]"))
-    # assert send_application is not None, "找不到：send_application"
-    # send_application.click()
+    send_application = wait_for_element_clickable(driver, (By.XPATH, "//button[contains(text(),'送出申請')]"))
+    assert send_application is not None, "找不到：send_application"
+    send_application.click()
     # # 審核提醒彈窗-確認送出
-    # send_check = wait_for_element_clickable(driver, (By.XPATH, '/html/body/div[2]/div/div[6]/button[1]'))
-    # assert send_check is not None, "找不到：send_check"
-    # send_check.click()
+    send_check = wait_for_element_clickable(driver, (By.XPATH, '/html/body/div[2]/div/div[6]/button[1]'))
+    assert send_check is not None, "找不到：send_check"
+    send_check.click()
     # # 強制等待避免彈窗太快關閉
-    # time.sleep(3)
+    time.sleep(3)
     # # 等待 h2 標題出現並驗證文字為申請成功
-    # swal_title = WebDriverWait(driver, 10).until(
-    #     EC.visibility_of_element_located((By.ID, "swal2-title"))
-    # )
-    # assert swal_title.text.strip() == "申請成功", f"彈窗標題錯誤，實際為: {swal_title.text}"
-    # print("#測試案例 協會送出訂單成功")
+    swal_title = WebDriverWait(driver, 10).until(
+        EC.visibility_of_element_located((By.ID, "swal2-title"))
+    )
+    assert swal_title.text.strip() == "申請成功", f"彈窗標題錯誤，實際為: {swal_title.text}"
+    print("#測試案例 協會送出訂單成功")
