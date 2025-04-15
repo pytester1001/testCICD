@@ -207,7 +207,7 @@ def test_add_new_application_case_successfully(driver,login_manufactor):
         # 上傳五個文件
         upload_file('產品製程圖', 'assets/test.pdf')
         upload_file('工廠登記核准相關文件', 'assets/dog1.jpg')
-        upload_file('工廠平面配置圖', 'assets/dogㄉ.jpg')
+        upload_file('工廠平面配置圖', 'assets/dog2.jpg')
         upload_file('生產設備 清潔/消毒 之作業 方式/程序(含清潔劑、消毒劑)', 'assets/dog3.jpg')
         upload_file('其它(檔名請清楚描述檔案用途)', 'assets/dog4.jpg')
         add_button = wait_for_element_clickable(driver, (By.XPATH, "/html/body/div[2]/div/div[2]/div[3]/div[2]/button"))
