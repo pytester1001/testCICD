@@ -366,7 +366,7 @@ def test_add_new_application_case_successfully(driver,login_manufactor):
                 "//label[normalize-space(text())='規格圖片']/following-sibling::div//input[@type='file']"
             ))
         )
-        upload_input.send_keys("/Users/harry/Desktop/Picture/dog1.jpg")
+        upload_input.send_keys("assets/dog1.jpg")
 
 
         # 等待表格中的「產品規格中文」出現
