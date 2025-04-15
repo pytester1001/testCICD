@@ -101,7 +101,7 @@ def test_user_association_login_and_logout_successfully(driver):
     login.click()
     time.sleep(1)
     # 預期網址
-    expected_url = "https://halal-dev.intersense.cloud/halal-association/account-management/employee"
+    expected_url = "https://halal-dev.intersense.cloud/halal-association/employee-account-management"
     # 驗證當前網址
     assert driver.current_url == expected_url, f"登入後跳轉網址異常 ,預期: {expected_url}，實際: {driver.current_url}"
     print('#測試案例1-1 協會用戶登入成功')
