@@ -11,7 +11,7 @@ from selenium.webdriver.firefox.options import Options as FirefoxOptions
 import pytest , time , os , random
 
 # 清真Halal-廠商後台
-# 更新公司資訊成功
+# 測試案例3-1 廠商新增案件成功
 
 
 # 設置 Browser 環境
@@ -86,7 +86,7 @@ def login_manufactor(driver):
     WebDriverWait(driver, 10).until(EC.url_changes('https://halal-dev.intersense.cloud/halal-association/account-management/employee'))
     return driver
 
-# 新增申請案件成功
+# 測試案例3-1 廠商新增案件成功
 def test_add_new_application_case_successfully(driver,login_manufactor):
     
     driver = login_manufactor
@@ -94,7 +94,8 @@ def test_add_new_application_case_successfully(driver,login_manufactor):
     WebDriverWait(driver, 10).until(EC.url_to_be("https://halal-dev.intersense.cloud/halal-manufactor/case-management"))
     time.sleep(1)
 
-    # 我的案件頁面-新增申請案件
+    # 我的案件頁面
+    # 新增申請案件
     add_case = wait_for_element_clickable(driver, (By.XPATH, '//button[contains(text(),"新增申請案件")]'))
     assert add_case is not None, "找不到：add_case"
     add_case.click()
@@ -111,6 +112,7 @@ def test_add_new_application_case_successfully(driver,login_manufactor):
     assert check_alert is not None, "找不到：check_alert"
     check_alert.click()
 
+
     # 基本資料tag
     # 滾動頁面至底部-填入聯絡人資訊
     def scroll_down(driver, pixels=500):
@@ -118,7 +120,7 @@ def test_add_new_application_case_successfully(driver,login_manufactor):
     scroll_down(driver, pixels=1600)
     time.sleep(0.5)
 
-    # 填入聯絡人資訊
+    # 聯絡人資訊表單
     name = wait_for_element_clickable(driver, (By.XPATH, "//input[@id='name']"))
     assert name is not None, "找不到：name"
     name.send_keys('harry',random_name)
@@ -143,6 +145,7 @@ def test_add_new_application_case_successfully(driver,login_manufactor):
     next_step.click()
     time.sleep(1)
 
+
     # 工廠資訊tag
     # 工廠資訊-新增工廠
     for i in range(1):  # 新增 3 筆工廠
@@ -161,34 +164,35 @@ def test_add_new_application_case_successfully(driver,login_manufactor):
         factoryName.send_keys(factory_name)
         factoryAddress = wait_for_element_clickable(driver, (By.XPATH, "//input[@id='factoryAddress']"))
         assert factoryAddress is not None, "找不到：factoryAddress"
-        factoryAddress.send_keys('台北市大安區仁愛路四段123號')
+        factoryAddress.send_keys('台中市西區向上南路一段182號2樓')
         factoryTel = wait_for_element_clickable(driver, (By.XPATH, "//input[@id='factoryTel']"))
         assert factoryTel is not None, "找不到：factoryTel"
         factoryTel.send_keys('(02)12345678')
         factoryURL = wait_for_element_clickable(driver, (By.XPATH, "//input[@id='factoryWebsite']"))
         assert factoryURL is not None, "找不到：factoryURL"
         factoryURL.send_keys('https://www.intersense.com.tw')
-        # 代工廠
+        # 代工廠核取方塊
         foundry_checkbox = wait_for_element_clickable(driver, (By.XPATH, "//*[@id='foundry']"))
         assert foundry_checkbox is not None, "找不到：foundry_checkbox"
         foundry_checkbox.click()
-        # 生產設備
+        # 生產設備核取方塊
         production_equipment = wait_for_element_clickable(driver, (By.XPATH, "//*[@id='equipment']"))
         assert production_equipment is not None, "找不到：production_equipment"
         production_equipment.click()
+        # 設備/生產線/產品描述
         attachment_description = wait_for_element_clickable(driver, (By.XPATH, "//textarea[@id='equipmentDescription']"))
         assert attachment_description is not None, "找不到：attachment_description"
-        attachment_description.send_keys('「製程選擇」（Process Selection）是指決定商品或服務系統化生產的方式...')
-
+        attachment_description.send_keys('讓工作更輕鬆、生活更有序 —— 我們的智能任務管理工具結合直覺式設計與強大功能，專為追求效率與靈活性的你打造。不論是團隊協作還是個人規劃，只需一個平台就能輕鬆掌握所有待辦事項、專案進度與日常提醒，讓你不再被瑣事打亂節奏，專注完成真正重要的事。')
         # 滾動頁面至底部
         def scroll_down(driver, pixels=500):
             driver.execute_script(f"window.scrollBy(0, {pixels});")
         scroll_down(driver, pixels=1600)
         time.sleep(0.5)
-
+        # 運送方式描述
         shipping_method = wait_for_element_clickable(driver, (By.XPATH, "//textarea[@id='transportation']"))
         assert shipping_method is not None, "找不到：shipping_method"
-        shipping_method.send_keys('中轉倉是從進來的卡車上卸下物料...')
+        shipping_method.send_keys('我們提供多元且彈性的運送選項，讓您的商品能快速、安全地送達指定地點。標準配送服務預計於下單後 2～5 個工作天內送達，另提供快速到貨（24 小時內出貨）與宅配代收服務，滿足不同時效與便利性的需求。所有包裹均可透過追蹤編號即時查詢配送狀態，確保每一筆訂單皆準時無誤地送到您手中。')
+        # 工廠附件
         def upload_file(filetype_text, file_path):
             driver.find_element(By.CLASS_NAME, "css-dk3iff-control").click()
             time.sleep(0.5)
@@ -204,23 +208,21 @@ def test_add_new_application_case_successfully(driver,login_manufactor):
                 EC.presence_of_element_located((By.XPATH, f"//td[text()='{filetype_text}']"))
             )
             assert file_type_text.text == filetype_text, f"列表中找不到『{filetype_text}』"
-        # 上傳五個文件
-        upload_file('產品製程圖', 'assets/test.pdf')
-        upload_file('工廠登記核准相關文件', 'assets/dog1.jpg')
-        upload_file('工廠平面配置圖', 'assets/dog2.jpg')
-        upload_file('生產設備 清潔/消毒 之作業 方式/程序(含清潔劑、消毒劑)', 'assets/dog3.jpg')
-        upload_file('其它(檔名請清楚描述檔案用途)', 'assets/dog4.jpg')
+        # 上傳文件
+        upload_file('產品製程圖', '/Users/harry/Desktop/Picture/副檔名/test.pdf')
+        upload_file('工廠登記核准相關文件', '/Users/harry/Desktop/Picture/dog1.jpg')
+        upload_file('工廠平面配置圖', '/Users/harry/Desktop/Picture/dog2.jpg')
+        upload_file('生產設備 清潔/消毒 之作業 方式/程序(含清潔劑、消毒劑)', '/Users/harry/Desktop/Picture/dog3.jpg')
+        upload_file('其它(檔名請清楚描述檔案用途)', '/Users/harry/Desktop/Picture/dog4.jpg')
         add_button = wait_for_element_clickable(driver, (By.XPATH, "/html/body/div[2]/div/div[2]/div[3]/div[2]/button"))
         assert add_button is not None, "找不到：add_button"
         add_button.click()
         time.sleep(0.5)
-
         # 滾動頁面至頂部
         def scroll_to_top(driver):
             driver.execute_script("window.scrollTo(0, 0);")
         scroll_to_top(driver)
         time.sleep(0.5)
-
 
     # 滾動頁面至底部
     def scroll_down(driver, pixels=500):
@@ -228,6 +230,7 @@ def test_add_new_application_case_successfully(driver,login_manufactor):
     scroll_down(driver, pixels=1600)
     time.sleep(0.5)
 
+    # 下一步
     next_step = wait_for_element_clickable(driver, (By.XPATH, "//button[contains(text(),'下一步')]"))
     assert next_step is not None, "找不到：next_step"
     next_step.click()
@@ -247,7 +250,6 @@ def test_add_new_application_case_successfully(driver,login_manufactor):
         current_time = datetime.now().strftime('%Y%m%d%H%M%S')
         name_cn = f'{current_time}_CN_{i}'
         name_en = f'{current_time}_EN_{i}'
-
         category_names.append(name_cn)
 
         add_category = wait_for_element_clickable(driver, (By.XPATH, "//button[contains(text(),'新增分類')]"))
@@ -262,7 +264,6 @@ def test_add_new_application_case_successfully(driver,login_manufactor):
         add_button = wait_for_element_clickable(driver, (By.XPATH, "/html/body/div[2]/div/div/div[2]/div[2]/button"))
         assert add_button is not None, "找不到：add_button"
         add_button.click()
-
     # 滾動頁面至底部
     def scroll_down(driver, pixels=500):
         driver.execute_script(f"window.scrollBy(0, {pixels});")
@@ -270,12 +271,12 @@ def test_add_new_application_case_successfully(driver,login_manufactor):
     time.sleep(0.5)
 
     # 申請產品清單-新增產品
-    # 產品分類清單-新增分類-使用迴圈新增3筆
+    # 產品分類清單-新增分類
     for i in range(3): 
         current_time = datetime.now().strftime('%Y%m%d%H%M%S')
-        name_cn = f'產品名稱中文_{current_time}_{i}'
+        name_cn = f'申請產品中文_{current_time}_{i}'
         name_en = f'product_name_en_{current_time}_{i}'
-        category_to_select = category_names[i]  # <-- 用對應的分類名稱
+        category_to_select = category_names[i]  # 使用對應的分類名稱
 
         add_product = wait_for_element_clickable(driver, (By.XPATH, "//button[contains(text(),'新增產品')]"))
         assert add_product is not None, "找不到：add_product"
@@ -303,19 +304,19 @@ def test_add_new_application_case_successfully(driver,login_manufactor):
         upload_input = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.ID, 'healthLicense'))
         )
-        upload_input.send_keys('assets/test.pdf')
+        upload_input.send_keys('/Users/harry/Desktop/Picture/副檔名/test.pdf')
         # 驗證顯示'檢視檔案'
         file_link = wait_for_element_clickable(driver, (By.XPATH, "//a[contains(text(),'檢視檔案')]"))
         assert "檢視檔案" in file_link.text, "欄位文字顯示錯誤，應為『檢視檔案』"
 
-        # 工廠名稱下拉式選單 - 展開下拉
+        # 工廠名稱下拉式選單
         factory_dropdown = wait_for_element_clickable(driver, (
             By.XPATH, "//div[contains(@class,'css-dk3iff-control')]//div[contains(text(),'請選擇工廠')]"
         ))
         assert factory_dropdown is not None, "找不到：factory_dropdown"
         factory_dropdown.click()
         time.sleep(0.5)
-        # 選擇特定工廠名稱，例如『櫻特森工廠』
+        # 選擇工廠名稱
         factory_options = WebDriverWait(driver, 10).until(
             EC.presence_of_all_elements_located((By.XPATH, "//div[contains(@class,'-option')]"))
         )
@@ -323,69 +324,56 @@ def test_add_new_application_case_successfully(driver,login_manufactor):
         factory_options[0].click()
 
         # 製程圖
-        # 製程圖下拉選單 - 展開下拉
+        # 製程圖下拉選單
         process_drawing_dropdown = wait_for_element_clickable(driver, (
             By.XPATH, "//div[contains(@class,'css-dk3iff-control')]//div[contains(text(),'請選擇製程圖')]"
         ))
         assert process_drawing_dropdown is not None, "找不到：process_drawing_dropdown"
         process_drawing_dropdown.click()
         time.sleep(0.5)
-
         # 點選下拉選單中的第一個選項
         process_drawing_options = WebDriverWait(driver, 10).until(
             EC.presence_of_all_elements_located((By.XPATH, "//div[contains(@class,'-option')]"))
         )
         assert len(process_drawing_options) > 0, "找不到任何製程圖選項"
         process_drawing_options[0].click()
-
+        # 綁定製程圖
         bind_picture = wait_for_element_clickable(driver, (By.XPATH, "//button[contains(text(),'綁定圖片')]"))
         assert bind_picture is not None, "找不到：bind_picture"
         bind_picture.click()
 
-        # 等待表格中的文字出現
+        # 等待並驗證表格中文字
         factory_text_cell = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.XPATH, "//table[contains(@class,'product-modal_table')]//td[contains(text(),'櫻特森')]"))
         )
         assert "櫻特森工廠" in factory_text_cell.text, "表格內找不到『櫻特森工廠』字樣"
 
-
         # 中文規格
         packageSpec_CN = wait_for_element_clickable(driver, (By.XPATH, "//*[@id='packageSpec']"))
         assert packageSpec_CN is not None, "找不到：packageSpec_CN"
         packageSpec_CN.send_keys('產品規格中文')
-
         # 英文規格
         packageSpec_EN = wait_for_element_clickable(driver, (By.XPATH, "//*[@id='packageSpecEn']"))
         assert packageSpec_EN is not None, "找不到：packageSpec_EN"
         packageSpec_EN.send_keys('Product specification in English')
-
-        # 等待並定位到隱藏的 file input 元素
+        # 包裝規格-上傳圖片
         upload_input = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((
                 By.XPATH,
                 "//label[normalize-space(text())='規格圖片']/following-sibling::div//input[@type='file']"
             ))
         )
-        upload_input.send_keys("assets/dog1.jpg")
-
-
-        # 等待表格中的「產品規格中文」出現
-        # spec_text_cell = WebDriverWait(driver, 10).until(
-        #     EC.presence_of_element_located((By.XPATH, "//table[contains(@class,'product-modal_table')]//th[contains(text(),'產品規格中文')]"))
-        # )
-        # assert "產品規格中文" in spec_text_cell.text, "表格內找不到『產品規格中文』字樣"
-
+        upload_input.send_keys("/Users/harry/Desktop/Picture/dog1.jpg")
 
         # 選擇原料
         select_raw_material = wait_for_element_clickable(driver, (By.XPATH, "/html/body/div[2]/div/div[2]/div[4]/div[1]/div/button"))
         assert select_raw_material is not None, "找不到：select_raw_material"
         select_raw_material.click()
-        # 新增原料
+        # 第二層彈窗-新增原料
         add_raw_material = wait_for_element_clickable(driver, (By.XPATH, "/html/body/div[3]/div/div[2]/div[1]/div[1]/div/button"))
         assert add_raw_material is not None, "找不到：add_raw_material"
         add_raw_material.click()
         time.sleep(1)
-
 
         name_cn = f'原料中文_{i}'
         name_en = f'raw_en_{i}'
@@ -401,7 +389,7 @@ def test_add_new_application_case_successfully(driver,login_manufactor):
         wait_for_element_clickable(driver, (By.XPATH, "//input[@id='manufacturer']")).send_keys(manufacturer_val)
         wait_for_element_clickable(driver, (By.XPATH, "//input[@id='origin']")).send_keys(origin_val)
         wait_for_element_clickable(driver, (By.XPATH, "//input[@id='supplier']")).send_keys(supplier_val)
-        # 滾動並點擊「新增」按鈕
+        # 滾動並點擊「新增」
         add_btn_target = driver.find_element(By.XPATH, "//*[@id='target-element']/div[3]/div[2]/button")
         driver.execute_script("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'})", add_btn_target)
         time.sleep(1)
@@ -413,11 +401,11 @@ def test_add_new_application_case_successfully(driver,login_manufactor):
         assert check_alert is not None, "找不到：check_alert"
         check_alert.click()
         time.sleep(0.5)
-        # 滾動回「新增原料」按鈕（準備選取）
+        # 滾動回「新增原料」
         select_raw_material_button = driver.find_element(By.XPATH, "/html/body/div[3]/div/div[2]/div/div[1]/div/button")
         driver.execute_script("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'})", select_raw_material_button)
 
-        # 勾選核取方塊（index從1開始）
+        # 依序勾選核取方塊
         checkbox_xpath = f"(//input[@id='select'])[{i+1}]"
         select_raw_material = wait_for_element_clickable(driver, (By.XPATH, checkbox_xpath))
         assert select_raw_material is not None, f"找不到：select_raw_material 第{i+1}項"
@@ -429,8 +417,7 @@ def test_add_new_application_case_successfully(driver,login_manufactor):
         select_button = wait_for_element_clickable(driver, (By.XPATH, "//button[contains(text(),'選取')]"))
         assert select_button is not None, "找不到：select_button"
         select_button.click()
-        time.sleep(1)  # 等下一輪開窗完成
-
+        time.sleep(1)
 
         add_button = wait_for_element_clickable(driver, (By.XPATH, "/html/body/div[2]/div/div[2]/div[5]/div[2]/button"))
         assert add_button is not None, "找不到：add_button"
@@ -438,8 +425,9 @@ def test_add_new_application_case_successfully(driver,login_manufactor):
         check_alert = wait_for_element_clickable(driver, (By.XPATH, '//button[contains(text(),"確定")]'))
         assert check_alert is not None, "找不到：check_alert"
         check_alert.click()
-        time.sleep(1)  # 稍微等待避免時間太近
+        time.sleep(1)
 
+    # 下一步
     next_step = wait_for_element_clickable(driver, (By.XPATH, "//button[contains(text(),'下一步')]"))
     assert next_step is not None, "找不到：next_step"
     next_step.click()
@@ -447,9 +435,9 @@ def test_add_new_application_case_successfully(driver,login_manufactor):
 
     # 不申請產品tag
     # 不申請產品清單-新增產品
-    for i in range(3):  # 新增 3 筆產品
+    for i in range(3): 
         timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
-        name_cn = f'產品名稱中文_{timestamp}_{i}'
+        name_cn = f'不申請產品中文_{timestamp}_{i}'
         name_en = f'product_name_en_{timestamp}_{i}'
         add_product = wait_for_element_clickable(driver, (By.XPATH, "//*[@id='root']/div/div[2]/div/div[2]/div/div/div[2]/div/div[1]/div/button"))
         assert add_product is not None, "找不到：add_product"
@@ -479,6 +467,7 @@ def test_add_new_application_case_successfully(driver,login_manufactor):
     scroll_down(driver, pixels=1600)
     time.sleep(1)
 
+    # 下一步
     next_step = wait_for_element_clickable(driver, (By.XPATH, "//button[contains(text(),'下一步')]"))
     assert next_step is not None, "找不到：next_step"
     next_step.click()
@@ -500,12 +489,12 @@ def test_add_new_application_case_successfully(driver,login_manufactor):
         manufacturer_val = f'edit_{i}'
         origin_val = f'edit_{i}'
         supplier_val = f'edit_{i}'
-        # 點擊新增原料（第一層）
+        # 點擊新增原料（第一層彈窗）
         add_raw_material = wait_for_element_clickable(driver, (By.XPATH, "//*[@id='root']/div/div[2]/div/div[2]/div/div/div[2]/div/div[1]/div/button"))
         assert add_raw_material is not None, "找不到：add_raw_material"
         add_raw_material.click()
         time.sleep(1)
-        # 點擊新增原料（第二層彈窗內）
+        # 點擊新增原料（第二層彈窗）
         add_raw_material2 = wait_for_element_clickable(driver, (By.XPATH, "/html/body/div[2]/div/div[2]/div/div[1]/div/button"))
         assert add_raw_material2 is not None, "找不到：add_raw_material2"
         add_raw_material2.click()
@@ -517,72 +506,75 @@ def test_add_new_application_case_successfully(driver,login_manufactor):
         wait_for_element_clickable(driver, (By.XPATH, "//input[@id='manufacturer']")).send_keys(manufacturer_val)
         wait_for_element_clickable(driver, (By.XPATH, "//input[@id='origin']")).send_keys(origin_val)
         wait_for_element_clickable(driver, (By.XPATH, "//input[@id='supplier']")).send_keys(supplier_val)
-        # 滾動並點擊「新增」按鈕
+        # 滾動並點擊「新增」
         add_btn_target = driver.find_element(By.XPATH, "//*[@id='target-element']/div[3]/div[2]/button")
         driver.execute_script("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'})", add_btn_target)
         time.sleep(1)
         add_button = wait_for_element_clickable(driver, (By.XPATH, "//*[@id='target-element']/div[3]/div[2]/button"))
         assert add_button is not None, "找不到：add_button"
         add_button.click()
-        # 點擊「確定」Alert
+        # 點擊「確定」
         check_alert = wait_for_element_clickable(driver, (By.XPATH, '//button[contains(text(),"確定")]'))
         assert check_alert is not None, "找不到：check_alert"
         check_alert.click()
         time.sleep(0.5)
-        # 滾動回「新增原料」按鈕（準備選取）
+        # 滾動回「新增原料」
         select_raw_material_button = driver.find_element(By.XPATH, "/html/body/div[2]/div/div[2]/div[1]/div[1]/div/button")
         driver.execute_script("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'})", select_raw_material_button)
         time.sleep(1)
-        # 勾選核取方塊（index從1開始）
+        # 依序勾選核取方塊
         checkbox_xpath = f"(//input[@id='select'])[{i+4}]"
         select_raw_material = wait_for_element_clickable(driver, (By.XPATH, checkbox_xpath))
         assert select_raw_material is not None, f"找不到：select_raw_material 第{i+4}項"
         select_raw_material.click()
-        # 點選「選取」按鈕
+        # 點選「選取」
         select_btn_target = driver.find_element(By.XPATH, "//button[contains(text(),'選取')]")
         driver.execute_script("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'})", select_btn_target)
         time.sleep(1)
         select_button = wait_for_element_clickable(driver, (By.XPATH, "//button[contains(text(),'選取')]"))
         assert select_button is not None, "找不到：select_button"
         select_button.click()
-        time.sleep(1)  # 等下一輪開窗完成
-
+        time.sleep(1)
     # 滾動頁面至底部
     def scroll_down(driver, pixels=500):
         driver.execute_script(f"window.scrollBy(0, {pixels});")
     scroll_down(driver, pixels=1600)
     time.sleep(1.5)
+    # 下一步
     next_step = wait_for_element_clickable(driver, (By.XPATH, "//button[contains(text(),'下一步')]"))
     assert next_step is not None, "找不到：next_step"
     next_step.click()
     time.sleep(1)
     
+
     # 其他附件tag
-    for i in range(3):  # 要上傳 3 筆檔案
+    for i in range(3): 
         timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
         file_desc = f'test_file_{timestamp}_{i}'
-        file_path = f'assets/dog{i+1}.jpg'  # dog1.jpg ~ dog3.jpg
+        file_path = f'/Users/harry/Desktop/Picture/dog{i+1}.jpg'
         # 輸入檔案說明
         file_name = wait_for_element_clickable(driver, (By.XPATH, "//input[@placeholder='請輸入檔案說明']"))
         assert file_name is not None, "找不到：file_name"
-        file_name.clear()  # 清除舊內容（以防 UI 沒自動清掉）
+        file_name.clear()
         file_name.send_keys(file_desc)
         # 上傳檔案
         upload_input = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, 'div.input_container__KIk1u input[type="file"]'))
         )
         upload_input.send_keys(file_path)
-        time.sleep(1)  # 給點時間讓檔案上傳完成
+        time.sleep(1)
     # 滾動頁面至底部
     def scroll_down(driver, pixels=500):
         driver.execute_script(f"window.scrollBy(0, {pixels});")
     scroll_down(driver, pixels=1600)
     time.sleep(0.5)
+    # 下一步
     next_step = wait_for_element_clickable(driver, (By.XPATH, "//button[contains(text(),'下一步')]"))
     assert next_step is not None, "找不到：next_step"
     next_step.click()
     time.sleep(1)
     
+
     # 文審費tag
     # 滾動頁面至底部
     def scroll_down(driver, pixels=500):
@@ -594,12 +586,11 @@ def test_add_new_application_case_successfully(driver,login_manufactor):
     assert account_number is not None, "找不到：account_number"
     account_number.send_keys('12345')
     # 付款日期
-    # 點開日期選擇器
     payment_input = WebDriverWait(driver, 10).until(
         EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='請選擇日期']"))
     )
     payment_input.click()
-    # 點選「今天」的日期（根據特殊 class）
+    # 選擇「今天」的日期
     today_btn = WebDriverWait(driver, 10).until(
         EC.element_to_be_clickable((By.CSS_SELECTOR, ".react-datepicker__day--today"))
     )
@@ -608,24 +599,24 @@ def test_add_new_application_case_successfully(driver,login_manufactor):
     upload_input = WebDriverWait(driver, 10).until(
         EC.presence_of_element_located((By.ID, "paidFile"))
     )
-    upload_input.send_keys("assets/dog1.jpg")
-    # # 彈窗確認
+    upload_input.send_keys("/Users/harry/Desktop/Picture/dog1.jpg")
+    # 彈窗確認
     check_alert = wait_for_element_clickable(driver, (By.XPATH, '//button[contains(text(),"確定")]'))
     assert check_alert is not None, "找不到：check_alert"
     check_alert.click()
-    # # 送出申請
+    # 送出申請
     send_application = wait_for_element_clickable(driver, (By.XPATH, "//button[contains(text(),'送出申請')]"))
     assert send_application is not None, "找不到：send_application"
     send_application.click()
-    # # 審核提醒彈窗-確認送出
+    # 審核提醒彈窗-確認送出
     send_check = wait_for_element_clickable(driver, (By.XPATH, '/html/body/div[2]/div/div[6]/button[1]'))
     assert send_check is not None, "找不到：send_check"
     send_check.click()
-    # # 強制等待避免彈窗太快關閉
+    # 強制等待避免彈窗太快關閉
     time.sleep(3)
-    # # 等待 h2 標題出現並驗證文字為申請成功
+    # 等待彈窗並驗證文字
     swal_title = WebDriverWait(driver, 10).until(
         EC.visibility_of_element_located((By.ID, "swal2-title"))
     )
     assert swal_title.text.strip() == "申請成功", f"彈窗標題錯誤，實際為: {swal_title.text}"
-    print("#測試案例 協會送出訂單成功")
+    print('#測試案例3-1 廠商新增案件成功')
