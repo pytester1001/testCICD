@@ -1,9 +1,9 @@
-name: Run Pytest Selenium (Manual Only)
+name: Run Pytest Selenium CI
 
 on:
-  # 手動觸發：當需要執行時，手動觸發 CI
+  # 手動觸發：當需要執行時，手動執行 CI
   workflow_dispatch:
-  # 自動觸發：當有 push 發生時自動執行 CI
+  # 自動觸發：當有 push 時，自動觸發 CI
   # push:
   #   branches:
   #     - main
