@@ -1071,7 +1071,7 @@ def test_add_new_application_case_successfully(driver,login_manufactor):
     assert send_check is not None, "找不到：send_check"
     send_check.click()
     # 強制等待避免彈窗太快關閉
-    time.sleep(6)
+    time.sleep(8)
     # 等待彈窗並驗證文字
     swal_title = WebDriverWait(driver, 10).until(
         EC.visibility_of_element_located((By.ID, "swal2-title"))
