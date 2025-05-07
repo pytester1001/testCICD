@@ -90,6 +90,12 @@ def login_manufactor(driver):
 def test_add_new_application_case_successfully(driver,login_manufactor):
     
     driver = login_manufactor
+
+    # 公司資訊尚未完善『確認』彈窗
+    check_alert = wait_for_element_clickable(driver, (By.XPATH, '//button[contains(text(),"確定")]'))
+    assert check_alert is not None, "找不到：check_alert"
+    check_alert.click()
+    
     # 確保載入'我的案件'頁面
     WebDriverWait(driver, 10).until(EC.url_to_be("https://halal-dev.intersense.cloud/halal-manufactor/case-management"))
     time.sleep(1)
