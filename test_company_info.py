@@ -97,6 +97,7 @@ def test_add_new_application_case_successfully(driver,login_manufactor):
     check_alert.click()
     
     # 確保載入'我的案件'頁面
+    driver.get('https://halal-dev.intersense.cloud/halal-manufactor/case-management')
     WebDriverWait(driver, 10).until(EC.url_to_be("https://halal-dev.intersense.cloud/halal-manufactor/case-management"))
     time.sleep(1)
 
